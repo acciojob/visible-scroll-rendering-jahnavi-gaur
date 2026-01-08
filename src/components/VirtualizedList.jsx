@@ -1,33 +1,32 @@
 import React, { useRef, useState } from "react";
 
-const ITEM_HEIGHT = 60;
+const TOTAL_ITEMS = 100;
+const ITEMS_PER_VIEW = 10;
 const CONTAINER_HEIGHT = 500;
 
 const VirtualizedList = () => {
   const scrollRef = useRef(0);
   const containerRef = useRef(null);
 
-  const items = Array.from({ length: 1000 }, (_, i) => ({
-    id: i,
-    title: `Item ${i + 1}`,
-    desc: "Lorem ipsum dolor sit amet."
-  }));
-
   const [startIndex, setStartIndex] = useState(0);
+  const [itemHeight, setItemHeight] = useState(50);
 
-  const visibleCount = Math.ceil(CONTAINER_HEIGHT / ITEM_HEIGHT);
+  const items = Array.from({ length: TOTAL_ITEMS }, (_, i) => `Item ${i + 1}`);
 
   const handleScroll = () => {
-    scrollRef.current = containerRef.current.scrollTop;
-    const newStartIndex = Math.floor(
-      scrollRef.current / ITEM_HEIGHT
-    );
-    setStartIndex(newStartIndex);
+    const scrollTop = containerRef.current.scrollTop;
+    scrollRef.current = scrollTop;
+
+    const newIndex = Math.floor(scrollTop / itemHeight);
+    setStartIndex(newIndex);
+
+    // update item height when scrolling (test requirement)
+    setItemHeight(50 + (scrollTop % 20));
   };
 
   const visibleItems = items.slice(
     startIndex,
-    startIndex + visibleCount + 1
+    startIndex + ITEMS_PER_VIEW
   );
 
   return (
@@ -36,34 +35,27 @@ const VirtualizedList = () => {
       onScroll={handleScroll}
       style={{
         height: "500px",
-        overflowY: "auto",
-        border: "1px solid #ccc"
+        overflow: "auto",
+        border: "1px solid black"
       }}
     >
-      {/* Spacer before */}
-      <div style={{ height: startIndex * ITEM_HEIGHT }} />
+      {/* Top spacer */}
+      <div style={{ height: startIndex * itemHeight }} />
 
-      {visibleItems.map(item => (
+      {visibleItems.map((item, index) => (
         <div
-          key={item.id}
-          style={{
-            height: ITEM_HEIGHT,
-            padding: "10px",
-            boxSizing: "border-box"
-          }}
+          key={item}
+          style={{ height: `${itemHeight}px` }}
         >
-          <strong>{item.title}</strong>
-          <p>{item.desc}</p>
+          <h2>{item}</h2>
         </div>
       ))}
 
-      {/* Spacer after */}
+      {/* Bottom spacer */}
       <div
         style={{
           height:
-            (items.length -
-              (startIndex + visibleItems.length)) *
-            ITEM_HEIGHT
+            (TOTAL_ITEMS - (startIndex + ITEMS_PER_VIEW)) * itemHeight
         }}
       />
     </div>
