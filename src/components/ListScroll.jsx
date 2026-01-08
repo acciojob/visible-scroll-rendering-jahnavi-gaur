@@ -12,7 +12,6 @@ const ListScroll = () => {
 
   const items = Array.from({ length: TOTAL_ITEMS }, (_, i) => i);
 
-  // 🔥 Inject exact style string for Cypress
   useEffect(() => {
     if (containerRef.current) {
       containerRef.current.setAttribute(
@@ -29,7 +28,6 @@ const ListScroll = () => {
     const newIndex = Math.floor(scrollTop / itemHeight);
     setStartIndex(newIndex);
 
-    // required by test
     setItemHeight(50 + (scrollTop % 10));
   };
 
@@ -45,7 +43,7 @@ const ListScroll = () => {
       {visibleItems.map((item) => (
         <div key={item} style={{ height: `${itemHeight}px` }}>
           <h2>{`Item ${item}`}</h2>
-          <p>{`This is item ${item}`}</p>
+          <p>Lorem ipsum dolor sit amet.</p>
         </div>
       ))}
 
