@@ -1,12 +1,12 @@
 
 import React from "react";
 import './../styles/App.css';
-import VirtualizedList from "./VirtualizedList";
+import ListScroll from "./ListScroll";
 
 const App = () => {
   return (
     <div>
-        <VirtualizedList/>
+        <ListScroll/>
     </div>
   )
 }

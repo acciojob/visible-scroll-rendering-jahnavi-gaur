@@ -4,7 +4,7 @@ const TOTAL_ITEMS = 100;
 const ITEMS_PER_VIEW = 10;
 const CONTAINER_HEIGHT = 500;
 
-const VirtualizedList = () => {
+const ListScroll = () => {
   const scrollRef = useRef(0);
   const containerRef = useRef(null);
 
@@ -62,4 +62,4 @@ const VirtualizedList = () => {
   );
 };
 
-export default VirtualizedList;
+export default ListScroll;
